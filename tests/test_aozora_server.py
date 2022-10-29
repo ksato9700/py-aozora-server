@@ -74,7 +74,19 @@ def test_book_by_id():
 
 
 def test_book_by_title():
-    resp = client.get("/books", params={"title": "吾輩は猫である"})
+    title = "浅草公園"
+    resp = client.get("/books", params={"title": title})
     assert resp.status_code == 200
     books = resp.json()
     assert len(books) == 1
+    assert books[0]["title"] == "浅草公園"
+    assert books[0]["book_id"] == 21
+
+    title = "あいびき"
+    resp = client.get("/books", params={"title": title})
+    assert resp.status_code == 200
+    books = resp.json()
+    assert len(books) == 2
+    for book in books:
+        assert book["title"] == title
+        assert book["book_id"] in (5, 4843)
