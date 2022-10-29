@@ -12,8 +12,11 @@ router = APIRouter(
 
 
 @router.get("/")
-async def read_books(adb=Depends(get_db)):
-    return adb.get_books()
+async def read_books(adb=Depends(get_db), title: str | None = None):
+    query = {}
+    if title:
+        filter = {"title": title}
+    return adb.get_books(filter)
 
 
 @router.get("/{book_id}")

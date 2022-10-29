@@ -71,3 +71,10 @@ def test_book_by_id():
     resp = client.get("/books/10")
     assert resp.status_code == 404
     assert resp.json() == {"detail": "Book not found"}
+
+
+def test_book_by_title():
+    resp = client.get("/books", params={"title": "吾輩は猫である"})
+    assert resp.status_code == 200
+    books = resp.json()
+    assert len(books) == 1
